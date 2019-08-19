@@ -17,9 +17,7 @@ class UserCreationForm(UserCreationForm):
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST, request.FILES)
-        print(form, 'before check')
         if form.is_valid():
-            print('valid')
             form.save()
             return redirect('main')
     else:

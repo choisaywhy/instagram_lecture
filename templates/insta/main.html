@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="{% url "new" %}"> new </a><br><br>
+
+  <select id="sort-select" onchange="location = this.value;">
+        <option value="">정렬기준</option>  
+        <option value="?sort=new">최신</option>
+        <option value="?sort=like">좋아요</option>
+    </select>
+<br><br>
+{% for post in posts %}
+    {{ post.user }}<br>
+    <img src="{{post.image.url}}" height="100" width="100"><br>
+    {{ post.caption }}<br>
+{% endfor %}
+
+{% endblock %}

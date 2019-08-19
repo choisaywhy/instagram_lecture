@@ -1,20 +1,24 @@
-from django.shortcuts import render,get_object_or_404
-from .models import Post, Comment, Like
+from django.shortcuts import render
+from .models import *
+from .forms import *
+
 # Create your views here.
+def main(request):
+    posts = Post.objects.order_by('-created')
+    sort = request.GET.get('sort','')
+    if sort == 'new' :       # 최신순
+        posts = Post.objects.order_by('-created')
+    elif sort == 'like':
+        posts = Post.objects.order_by('created')
+    return render(request, 'insta/main.html', {'posts': posts})
 
-def index(request):
-    post = Post.objects.all().order_by('updated_at')[:5]
-    context = {
-        'posts':post,
-    }
-    return render(request, 'post/post_list.html', context)
-
-def detail(request, post_id):
-    post = get_objects_or_404(Post, pk =post_id)
-    context = {
-        'posts' : post
-    }
-    return render(request,'post/detail.html', context )
-
-def create(request):    
-    pass
+def new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('main')
+    else:
+        form = PostForm()
+    return render(request, 'insta/new.html', {'form':form})

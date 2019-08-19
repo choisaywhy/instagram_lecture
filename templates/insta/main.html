@@ -10,6 +10,7 @@
     </select>
 <br><br>
 {% for post in posts %}
+    <p>{{ post.like_count }}</p>
     {{ post.user }}<br>
     <img src="{{post.image.url}}" height="100" width="100"><br>
     {{ post.caption }}<br>

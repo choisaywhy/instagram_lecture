@@ -12,9 +12,16 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-updated']
+
     def __str__(self):
         return self.caption
 
+    @property # like 갯수를 세기 위해서 
+    def like_count(self):
+        return self.like_set.count()  # 모델의 릴레이션 셋 -> 기본값 모델명_set
+                               
 class Comment(models.Model):
 
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
@@ -25,4 +32,3 @@ class Comment(models.Model):
 class Like(models.Model): 
     user  = models.ForeignKey(User,on_delete=models.CASCADE) 
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
-    

@@ -1,7 +1,7 @@
 import operator
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment, User, Like
-from .forms import *
+from .forms import PostForm, CommentForm
 
 # Create your views here.
 def main(request):
@@ -18,12 +18,13 @@ def main(request):
         posts = []
         for post in post_list:
             posts.append(post[0])
-            
+    comment_form = CommentForm()
+
     # elif sort == 'like':
     #     posts = Post.objects.all()
     #     posts = sorted(posts, key=lambda p: p.like_count, reverse=True)
 
-    return render(request, 'insta/main.html', {'posts': posts})
+    return render(request, 'insta/main.html', {'posts': posts , 'comment_form': comment_form})
 
 def new(request):
     if request.method == "POST":
@@ -37,13 +38,15 @@ def new(request):
     return render(request, 'insta/post_create.html', {'form':form})
 
 
-#  elif sort == 'likes':        # 좋아요
-#             order = {}
-#             posts = Post.objects.all()
-#             for post in posts :
-#                 order[post] = post.post_likes.count()
-#             data = sorted(order.items(), key=operator.itemgetter(1), reverse=True)
-#             data_list = []
-#             for i in data:
-#                 data_list.append(i[0])
-#             context['object_list'] = data_list[current_page*2-2: current_page*2]
+def create_comment(request,post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            
+            return redirect('main')

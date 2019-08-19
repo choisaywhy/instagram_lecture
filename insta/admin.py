@@ -18,3 +18,7 @@ class CommentAdmin(admin.ModelAdmin):
 class LikeAdmin(admin.ModelAdmin):
     list_display = ('user','post')
     fields = ['user', 'post']
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    pass

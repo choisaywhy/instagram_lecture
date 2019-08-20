@@ -95,6 +95,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
+# AbstractUser를 상속받아 새로운 유저 모델을 생성했기 때문에
+# 설정해 주어야 합니다
 AUTH_USER_MODEL = 'insta.User'
 
 LANGUAGE_CODE = 'en-us'
@@ -111,10 +113,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+# static 파일의 접근 URL
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# 사용자가 업로드하는 media 파일의 접근 URL
+# BASE_DIR/media 경로에 업로드한 파일이 저장됩니다
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+
+# 로그인 또는 로그아웃한 뒤 리다이렉트하는 주소
 LOGIN_REDIRECT_URL = "main"
 LOGOUT_REDIRECT_URL = "main"

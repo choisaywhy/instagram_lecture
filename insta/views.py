@@ -8,9 +8,9 @@ def main(request):
     sort = request.GET.get('sort','')
     comment_form = CommentForm()
 
-    if sort == 'new' :       # 최신순
+    if sort == 'new' : # 글 작성 시각의 내림차순으로 정렬
         posts = Post.objects.all()
-    elif sort == 'like':        # 좋아요
+    elif sort == 'like': # 좋아요 개수의 내림차순으로 정렬
         ordered_posts = {}
         post_list = Post.objects.all()
         for post in post_list:
@@ -21,10 +21,13 @@ def main(request):
             posts.append(post[0])
 
     try:
+        # API의 자세한 설명은 https://docs.djangoproject.com/en/2.2/ref/models/querysets/#values-list를 참고해주세요
         liked_post =  Like.objects.filter(user=request.user).values_list('post__id', flat=True)
     except:
         liked_post = None
 
+    # 좋아요의 개수를 통해 정렬하는 로직이며, sorted 함수의 key 인자가 정렬의 기준이 됩니다.
+    # 따라서 post의 like_count 필드를 기준으로 정렬을 수행합니다.
     # elif sort == 'like':
     #     posts = Post.objects.all()
     #     posts = sorted(posts, key=lambda p: p.like_count, reverse=True)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Post, Comment, User, Like
 
-# Register your models here.
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):                               #좋아요 갯수 파악
     list_display = ('user','image','caption','created','updated','like_count')

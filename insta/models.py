@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# Create your models here.
+
 
 class User(AbstractUser): 
     profile  = models.ImageField()
@@ -13,14 +13,15 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-updated']
+        ordering = ['-updated'] # updated 필드를 기준으로 내림차순 정렬
 
     def __str__(self):
         return self.caption
 
-    @property # like 갯수를 세기 위해서 
+    # like 갯수를 세기 위한 property 구현
+    @property
     def like_count(self):
-        return self.like_set.count()  # 모델의 릴레이션 셋 -> 기본값 모델명_set
+        return self.like_set.count()  
                                
 class Comment(models.Model):
 

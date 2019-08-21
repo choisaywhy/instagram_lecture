@@ -1,76 +1,84 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-<a href="{% url 'new' %}"> new </a><br><br>
+<!-- 점보트론 시작 -->
+<div class="jumbotron">
+  <h1 class="display-4">CBNU Instagram</h1>
+  <p class="lead">Welcome to CBNU Instagram</p>
+</div>
+<!-- 점보트론 끝 -->
 
-  <select id="sort-select" onchange="location = this.value;">
-        <option value="">정렬기준</option>  
-        <option value="?sort=new">최신</option>
-        <option value="?sort=like">좋아요</option>
-    </select>
-<br><br>
+<div>
+  <a href="{% url 'new' %}">New</a>
+  <select id="sort-select" class="float-right" onchange="location = this.value;">
+    <option value="">정렬기준</option>
+    <option value="?sort=new">최신</option>
+    <option value="?sort=like">좋아요</option>
+  </select>
+</div>
 
 
 {% for post in posts %}
-
-  <div class="card mt-4" style="width: 18rem;">
-    <div class="card-header">{{ post.user }}</div>
-    <img src="{{ post.image.url }}" class="card-img-top" style="padding: 10px;">
-    <div class="card-body" style="border: 0.5px solid lightgray">
-      <p class="card-text">{{ post.caption }}</p>
-    </div>
-    <div class="card-footer text-muted">
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post-{{ post.id }}">
-          댓글 보기
-      </button>
-      <form action="{% url 'like' post.id %}" method="post" class="float-right">
-          {% csrf_token %}
-          {% if post.id in liked_post %}
-            <!-- {{ post.like_count }} -->
-            <button style="border: none; background-color: Transparent;" onclick="location.href='{{post_pk}}/like/'"><i class="fas fa-heart fa-2x" style="color: pink;"></i></button>
-          {% else %}
-            <!-- {{ post.like_count }} -->
-            <button style="border: none; background-color: Transparent;" onclick="location.href='{{post_pk}}/like/'"><i class="far fa-heart fa-2x" style="color: pink;"></i></button>
-          {% endif %}
-      </form>
-    </div>
+<div class="card mt-5">
+  <div class="card-header">{{ post.user }}</div>
+  <img src="{{ post.image.url }}" class="card-img-top" style="padding: 10px;">
+  <div class="card-body" style="border: 0.5px solid lightgray">
+    <p class="card-text">{{ post.caption }}</p>
   </div>
+  <div class="card-footer text-muted">
 
-  <!-- Modal -->
-  <div class="modal fade" id="post-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">댓글</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-          {% for comment in post.comment_set.all %}
-              <blockquote class="blockquote">
-                  <p class="mb-0">{{ comment.content }}</p>
-                  <footer class="blockquote-footer">{{ comment.user }}</footer>
-              </blockquote>
-          {% endfor %}
-          </div>
-          <div class="modal-footer" style="display: flex; justify-content: center;">
-          <form method='post' action="{% url 'create_comment' post.id %} ">
-              {%csrf_token%}
-              <div style="display: flex; flex-direction: column; ">
-                  <textarea name="{{ comment_form.content.name }}" cols="50"></textarea>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                      <button type="submit" class="btn btn-primary">댓글 작성</button>
-                  </div>
-              </div>
-          </form>
-          </div>
-        </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post-{{ post.id }}">
+      댓글 보기
+    </button>
+    <form action="{% url 'like' post.id %}" method="post" class="float-right">
+      {% csrf_token %}
+      {% if post.id in liked_post %}
+      <button style="border: none; background-color: Transparent;" onclick="location.href='{{post_pk}}/like/'"><i
+          class="fas fa-heart fa-2x" style="color: pink;"></i></button>
+      {% else %}
+      <button style="border: none; background-color: Transparent;" onclick="location.href='{{post_pk}}/like/'"><i
+          class="far fa-heart fa-2x" style="color: pink;"></i></button>
+      {% endif %}
+    </form>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="post-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">댓글</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+        {% for comment in post.comment_set.all %}
+        <blockquote class="blockquote">
+          <p class="mb-0">{{ comment.content }}</p>
+          <footer class="blockquote-footer">{{ comment.user }}</footer>
+        </blockquote>
+        {% endfor %}
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: center;">
+        <form method='post' action="{% url 'create_comment' post.id %} ">
+          {%csrf_token%}
+          <div style="display: flex; flex-direction: column; ">
+            <textarea name="{{ comment_form.content.name }}" cols="50"></textarea>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="submit" class="btn btn-primary">댓글 작성</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-      
+</div>
 {% endfor %}
 
 {% endblock %}

@@ -21,7 +21,7 @@ def main(request):
             posts.append(post[0])
 
     try:
-        # API의 자세한 설명은 https://docs.djangoproject.com/en/2.2/ref/models/querysets/#values-list를 참고해주세요
+        # API의 자세한 설명은 https://docs.djangoproject.com/en/2.2/ref/models/querysets/#values-list 를 참고해주세요
         liked_post =  Like.objects.filter(user=request.user).values_list('post__id', flat=True)
     except:
         liked_post = None

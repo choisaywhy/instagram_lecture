@@ -9,9 +9,11 @@
   </div>
   <div class="form-group">
     <label for="{{ form.image.id_for_label }}">사진</label>
-    <input type="file" class="form-control-file" id="{{ form.image.id_for_label }}">
+    <input type="file" class="form-control-file" id="{{ form.image.id_for_label }}" name="{{ form.image.name }}">
   </div>
-  <button type="submit" class="btn btn-success float-right ml-2">글 작성</button>
-  <a type="submit" class="btn btn-danger float-right" href="{% url 'main' %}">취소</a>
+  <div class="form-group">
+    <button type="submit" class="btn btn-success float-right ml-2">글 작성</button>
+    <a type="submit" class="btn btn-danger float-right" href="{% url 'main' %}">취소</a>
+  </div>
 </form>
 {% endblock content %}

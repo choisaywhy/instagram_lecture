@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser): 
     profile  = models.ImageField()
 
+
 class Post(models.Model):
     user  = models.ForeignKey(User, on_delete=models.CASCADE) 
     image = models.ImageField()
@@ -22,9 +23,9 @@ class Post(models.Model):
     @property
     def like_count(self):
         return self.like_set.count()  
+
                                
 class Comment(models.Model):
-
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user  = models.ForeignKey(User, on_delete=models.CASCADE) 
     content = models.TextField()

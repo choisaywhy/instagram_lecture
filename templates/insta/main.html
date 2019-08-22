@@ -9,27 +9,32 @@
 </div>
 <!-- 점보트론 끝 -->
 
+<!-- 정렬 기능 시작 -->
 <div>
-  <a href="{% url 'new' %}">New</a>
-  <select id="sort-select" class="float-right" onchange="location = this.value;">
-    <option value="">정렬기준</option>
-    <option value="?sort=new">최신</option>
-    <option value="?sort=like">좋아요</option>
-  </select>
+  <a type="button" class="btn btn-outline-info btn-sm" href="{% url 'new' %}">New</a>
+  <div class="btn-group float-right">
+    <button type="button" class="btn btn-outline-info btn-sm dropdown-toggle" data-toggle="dropdown"
+      onchange="location=this.value;">정렬</button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="?sort=new">최신</a>
+      <a class="dropdown-item" href="?sort=like">좋아요</a>
+    </div>
+  </div>
 </div>
-
+<!-- 정렬 기능 끝 -->
 
 {% for post in posts %}
 <div class="card mt-5">
-  <div class="card-header">{{ post.user }}</div>
-  <img src="{{ post.image.url }}" class="card-img-top" style="padding: 10px;">
-  <div class="card-body" style="border: 0.5px solid lightgray">
+  <div class="card-header">{{ post.user }}<span class="float-right" data-toggle="tooltip" data-placement="right"
+      title="{{ post.updated | date:'Y년 n월 j일 a g:i' }}">{{ post.updated | timesince }}전</span></div>
+  <img src="{{ post.image.url }}" class="card-img-top">
+  <div class="card-body" style="border-top: 0.5px solid lightgray">
     <p class="card-text">{{ post.caption }}</p>
   </div>
   <div class="card-footer text-muted">
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post-{{ post.id }}">
+    <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#post-{{ post.id }}">
       댓글 보기
     </button>
     <form action="{% url 'like' post.id %}" method="post" class="float-right">
@@ -45,9 +50,8 @@
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="post-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<!-- 댓글 모달 시작 -->
+<div class="modal fade" id="post-{{ post.id }}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -68,7 +72,7 @@
         <form method='post' action="{% url 'create_comment' post.id %} ">
           {%csrf_token%}
           <div style="display: flex; flex-direction: column; ">
-            <textarea name="{{ comment_form.content.name }}" cols="50"></textarea>
+            <textarea name="{{ comment_form.content.name }}" class="form-control" cols="50" placeholder="댓글을 남겨주세요~!"></textarea>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
               <button type="submit" class="btn btn-primary">댓글 작성</button>
@@ -79,6 +83,7 @@
     </div>
   </div>
 </div>
+<!-- 댓글 모달 끝 -->
 {% endfor %}
 
 {% endblock %}

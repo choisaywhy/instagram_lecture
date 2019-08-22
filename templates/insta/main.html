@@ -25,7 +25,9 @@
 
 {% for post in posts %}
 <div class="card mt-5">
-  <div class="card-header">{{ post.user }}<span class="float-right" data-toggle="tooltip" data-placement="right"
+  <div class="card-header">
+    <img src="{{post.user.profile.url}}" class="profile" style="margin-right:20px;">{{ post.user }}
+    <span class="float-right" data-toggle="tooltip" data-placement="right"
       title="{{ post.updated | date:'Y년 n월 j일 a g:i' }}">{{ post.updated | timesince }}전</span></div>
   <img src="{{ post.image.url }}" class="card-img-top">
   <div class="card-body" style="border-top: 0.5px solid lightgray">
@@ -63,8 +65,12 @@
       <div class="modal-body">
         {% for comment in post.comment_set.all %}
         <blockquote class="blockquote">
-          <p class="mb-0">{{ comment.content }}</p>
-          <footer class="blockquote-footer">{{ comment.user }}</footer>
+          <img src="{{comment.user.profile.url}}" class = "profile" style="position: absolute;">
+          <div style="padding-inline-start:15%">
+            <p class="mb-0">{{ comment.content }}</p>
+            <footer class="blockquote-footer">{{ comment.user }}</footer>
+          </div>
+          
         </blockquote>
         {% endfor %}
       </div>
@@ -84,6 +90,15 @@
   </div>
 </div>
 <!-- 댓글 모달 끝 -->
+
+<style>
+.profile{
+  border: 2px solid black;                        
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+</style>
 {% endfor %}
 
 {% endblock %}

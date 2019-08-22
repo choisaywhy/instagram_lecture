@@ -52,7 +52,6 @@ def new(request):
         'form': form
     })
 
-
 def create_comment(request,post_pk):
     post = get_object_or_404(Post, pk=post_pk)
 

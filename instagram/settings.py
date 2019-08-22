@@ -99,9 +99,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # 설정해 주어야 합니다
 AUTH_USER_MODEL = 'insta.User'
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 

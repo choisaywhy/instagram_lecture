@@ -20,13 +20,14 @@ def main(request):
         for post in post_list:
             posts.append(post[0])
 
-    try:
+    try: # liked_post print해보면 현재 사용자가 좋아요 누른 querySet[post.id]이 나옵니다. -> 템플렛단에서 posts for문 돌면서 liked_post와 대조 후 하트/빈하트 출력하려고
         # API의 자세한 설명은 https://docs.djangoproject.com/en/2.2/ref/models/querysets/#values-list 를 참고해주세요
         liked_post =  Like.objects.filter(user=request.user).values_list('post__id', flat=True)
     except:
         liked_post = None
 
-    # 좋아요의 개수를 통해 정렬하는 로직이며, sorted 함수의 key 인자가 정렬의 기준이 됩니다.
+    # +) {post.id : 좋아요갯수} 인 dict 만들어서 좋아요순으로 내림차순(reverse=True)정렬함니다. 왜 dict를 썼냐면 post.id랑 post.좋아요 짝지을려고 | dict의 키값은 유일해야 하니까 post.id로 했음
+    # 좋아요의 개수를 통해 정렬하는 로직이며, sorted 함수의 key 인자가 정렬의 기준이 됩니다. -> 요기선 key를 1번째, 즉 dict의 value값으로 줍니다. 0으로 바꾸면 dict의 key가 되겠쥬
     # 따라서 post의 like_count 필드를 기준으로 정렬을 수행합니다.
     # elif sort == 'like':
     #     posts = Post.objects.all()
@@ -76,3 +77,4 @@ def like(request,post_pk):
             Like.objects.create(user=request.user, post=post)
             
     return redirect('main')
+    # 지금 로그인한 유저가 해당 포스트 좋아요 눌렀으면 -> 지워 | 안눌렀으면 -> 눌러(좋아요 객체 맹글어)

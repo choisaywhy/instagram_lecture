@@ -44,9 +44,11 @@
       {% if post.id in liked_post %}
       <button style="border: none; background-color: Transparent;" onclick="location.href='{{post_pk}}/like/'"><i
           class="fas fa-heart fa-2x" style="color: pink;"></i></button>
+          {{ post.like_count }}
       {% else %}
       <button style="border: none; background-color: Transparent;" onclick="location.href='{{post_pk}}/like/'"><i
           class="far fa-heart fa-2x" style="color: pink;"></i></button>
+          {{ post.like_count }}
       {% endif %}
     </form>
   </div>

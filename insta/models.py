@@ -17,7 +17,7 @@ class Post(models.Model):
         ordering = ['-updated'] # updated 필드를 기준으로 내림차순 정렬
 
     def __str__(self):
-        return self.caption
+        return '%s - %s' % (self.id, self.user)
 
     # like 갯수를 세기 위한 property 구현
     @property

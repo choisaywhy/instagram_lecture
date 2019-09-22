@@ -28,7 +28,9 @@
   <div class="card-header">
     <img src="{{post.user.profile.url}}" class="profile" style="margin-right:20px;">{{ post.user }}
     <span class="float-right" data-toggle="tooltip" data-placement="right"
-      title="{{ post.updated | date:'Y년 n월 j일 a g:i' }}">{{ post.updated | timesince }}전</span></div>
+      title="{{ post.updated | date:'Y년 n월 j일 a g:i' }}">{{ post.updated | timesince }}전</span>
+  </div>
+
   <img src="{{ post.image.url }}" class="card-img-top">
   <div class="card-body" style="border-top: 0.5px solid lightgray">
     <p class="card-text">{{ post.caption }}</p>
@@ -39,18 +41,30 @@
     <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#post-{{ post.id }}">
       댓글 보기
     </button>
+
     <form action="{% url 'like' post.id %}" method="post" class="float-right">
       {% csrf_token %}
       {% if post.id in liked_post %}
       <button style="border: none; background-color: Transparent;" onclick="location.href='{{post_pk}}/like/'"><i
-          class="fas fa-heart fa-2x" style="color: pink;"></i></button>
+          class="btn fas fa-heart fa-2x" style="color: pink;"></i></button>
           {{ post.like_count }}
       {% else %}
       <button style="border: none; background-color: Transparent;" onclick="location.href='{{post_pk}}/like/'"><i
-          class="far fa-heart fa-2x" style="color: pink;"></i></button>
+          class="btn far fa-heart fa-2x" style="color: pink;"></i></button>
           {{ post.like_count }}
       {% endif %}
     </form>
+
+        <!-- 수정 / 삭제 -->
+    {% if post.user == request.user %}
+      <div class="btn float-right" style="margin:0px 5px;">
+        <a href="{% url 'edit' post.id %}"><i class="far fa-edit" style="color: gray; font-size: 35px;"></i></a>
+      </div>
+      <div  class="btn float-right" style="margin:0px 5px;">
+        <a href="{% url 'delete' post.id %}"><i class="far fa-trash-alt" style="color: gray; font-size: 35px;"></i></a>
+      </div>
+    {% endif %}
+
   </div>
 </div>
 
